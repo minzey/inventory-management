@@ -2,6 +2,11 @@
 
 Inventory management application lets users perform CRUD operations on inventory items, and download an export of inventory in a CSV file.
 
+### Features
+1. Supports CRUD
+2. Application supports multiple timezones. Select your timezone on the homepage to see data wrt your time. 
+3. All records in inventory can be exported to a csv file. The datetime fields in the file are translated in localtime of the client (from the timezone selected).
+
 Extra feature attempted - **Export inventory to CSV**
 
 ## Stack used
