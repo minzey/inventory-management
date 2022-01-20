@@ -1,0 +1,93 @@
+{% extends "home.html" %}
+{% load static %}
+{% load bootstrap5 %}
+{% load tz %}
+
+{% block content %}
+
+    <div class="container p-4">
+        <a href="{% url 'add-item' %}" class="btn btn-primary btn-lg active" role="button" >Add Item</a>
+{#        <a href="{% url 'export-item-page' %}" class="btn btn-primary btn-lg active" role="button" >Export Page to CSV</a>#}
+        <a href="{% url 'export-all-items-csv' %}" class="btn btn-primary btn-lg active" role="button" >Export Inventory to CSV</a>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">SKU</th>
+          <th scope="col">Title</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Last Modified At</th>
+          <th scope="col">Price</th>
+          <th scope="col">Status</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in inventory %}
+            <tr>
+              <th scope="row"><a href="{% url 'detail-item' item.pk %}">{{ item.sku }}</a></th>
+              <td>{{ item.title }}</td>
+              <td>{{ item.count }}</td>
+              <td>{% localtime on %}{{ item.last_modified_at }}</td>{% endlocaltime %}
+              <td>${{ item.price }}</td>
+              <td>{% if item.active == True %} Active {% else %} Inactive {% endif %}</td>
+              <td><a href="{% url 'delete-item' item.pk %}">Del</a></td>
+
+            </tr>
+        {% empty %}
+            <tr>Add items to inventory.</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+    <nav>
+        <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ .previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+          </li>
+        {% endif %}
+
+        {% if page_obj.number|add:'-4' > 1 %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'-5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+                <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+            </li>
+            {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}
+           <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:'5' }}">&hellip;</a></li>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+            <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </nav>
+
+</div>
+
+{% endblock %}

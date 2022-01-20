@@ -1,0 +1,14 @@
+{% extends "home.html" %}
+{% load bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
+

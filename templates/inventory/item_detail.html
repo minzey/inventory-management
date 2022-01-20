@@ -1,0 +1,40 @@
+{% extends "home.html" %}
+{% load bootstrap5 %}
+{% load static %}
+{% load tz %}
+
+{% block content %}
+    <h1>SKU: {{ item.sku }}</h1>
+    <br>
+
+
+    <a href="{% url 'edit-item' item.pk %}" class="btn btn-primary btn-lg active" role="button" >Edit Item</a>
+    <dl class="row">
+        <dt class="col-sm-3">Title</dt>
+        <dd class="col-sm-9">{{ item.title }}</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">{% if item.active == True %} Active {% else %} Inactive {% endif %}</dd>
+
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">{{ item.description }}</dd>
+
+        <dt class="col-sm-3">Metadata</dt>
+        <dd class="col-sm-9">{{ item.metadata }}</dd>
+
+        <dt class="col-sm-3">Price</dt>
+        <dd class="col-sm-9">${{ item.price }}</dd>
+
+        <dt class="col-sm-3">Quantity</dt>
+        <dd class="col-sm-9">{{ item.count }}</dd>
+
+        {% localtime on %}
+        <dt class="col-sm-3">Created at</dt>
+        <dd class="col-sm-9">{{ item.created_at }}</dd>
+
+        <dt class="col-sm-3">Last modified at</dt>
+        <dd class="col-sm-9">{{ item.last_modified_at }}</dd>
+        {% endlocaltime %}
+    </dl>
+{% endblock %}
+
